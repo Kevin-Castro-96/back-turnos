@@ -9,11 +9,12 @@ import {
 import CredencialDto from "../dto/credencialDto";
 import { PostgresError } from "../interfaces/postgreErrorInterface";
 
-//creacion de usuario 
+// Registro de usuario
 export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, birthdate, nDni, userName, password } = req.body;
-    console.log(req.body)
+    console.log("POST /users/register body:", req.body);
+
     const newUser: User = await createUserService({
       name,
       email,
@@ -22,22 +23,22 @@ export const register = async (req: Request, res: Response) => {
       userName,
       password,
     });
+
     res.status(201).json(newUser);
   } catch (err) {
     const errorDb = err as PostgresError;
     res.status(400).json({
       mensaje: "no se pudo crear el usuario",
-      error:
-        err instanceof Error
+      error: err instanceof Error
+        ? errorDb.detail
           ? errorDb.detail
-            ? errorDb.detail
-            : err.message
-          : `Error desconocido`,
+          : err.message
+        : `Error desconocido`,
     });
   }
 };
 
-//loguea al usuario
+// Login de usuario
 export const login = async (req: Request, res: Response): Promise<void> => {
   try {
     const credentials: CredencialDto = req.body;
@@ -50,7 +51,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-//Obtiene todos los usuarios
+// Obtener todos los usuarios
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users = await getAllUsersService();
@@ -62,11 +63,8 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-//obtiene un usuario por ID
-export const getUserById = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+// Obtener usuario por ID
+export const getUserById = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
     const user: User = await getUserByIdService(Number(id));

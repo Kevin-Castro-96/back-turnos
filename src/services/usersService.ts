@@ -1,4 +1,4 @@
-import { AppDataSource, initDB } from "../config/data-source";
+import { getDataSource } from "../config/db";
 import { User } from "../entities/User";
 import { CreateUserDto } from "../dto/createUserDto";
 import { userCredential } from "../entities/Credential";
@@ -7,10 +7,9 @@ import Icredencial from "../interfaces/Icredencial";
 import CredencialDto from "../dto/credencialDto";
 
 export const createUserService = async (user: CreateUserDto): Promise<User> => {
-  await initDB(); // 👈 Aseguramos DB inicializada
-
-  const resultadoTransaccion = await AppDataSource.transaction(
-    async (entityManager) => {
+  const dataSource = await getDataSource(); // 👈 singleton
+  const resultadoTransaccion = await dataSource.transaction(
+    async (entityManager: any) => {
       const credential: userCredential = await createCredentialsService(
         entityManager,
         { userName: user.userName, password: user.password }
@@ -33,18 +32,18 @@ export const createUserService = async (user: CreateUserDto): Promise<User> => {
 };
 
 export const getAllUsersService = async (): Promise<User[]> => {
-  await initDB();
-  return await AppDataSource.getRepository(User).find({
+  const dataSource = await getDataSource();
+  return await dataSource.getRepository(User).find({
     relations: { appointments: true },
   });
 };
 
 export const loginService = async (credenciales: CredencialDto): Promise<any> => {
-  await initDB();
+  const dataSource = await getDataSource();
   const validacion: Icredencial = await validateCredencials(credenciales);
   if (!validacion) throw new Error("Credencial invalida");
 
-  const user = await AppDataSource.getRepository(User).findOne({
+  const user = await dataSource.getRepository(User).findOne({
     where: { credential: { id: validacion.id } },
   });
 
@@ -52,8 +51,8 @@ export const loginService = async (credenciales: CredencialDto): Promise<any> =>
 };
 
 export const getUserByIdService = async (id: number): Promise<User> => {
-  await initDB();
-  const user = await AppDataSource.getRepository(User).findOne({
+  const dataSource = await getDataSource();
+  const user = await dataSource.getRepository(User).findOne({
     where: { id },
     relations: { appointments: true },
   });
