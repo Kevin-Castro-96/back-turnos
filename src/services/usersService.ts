@@ -6,10 +6,12 @@ import { createCredentialsService, validateCredencials } from "./credentialServi
 import Icredencial from "../interfaces/Icredencial";
 import CredencialDto from "../dto/credencialDto";
 
+// Crear usuario
 export const createUserService = async (user: CreateUserDto): Promise<User> => {
-  const dataSource = await getDataSource(); // 👈 singleton
+  const dataSource = await getDataSource();
+
   const resultadoTransaccion = await dataSource.transaction(
-    async (entityManager: any) => {
+    async (entityManager) => {
       const credential: userCredential = await createCredentialsService(
         entityManager,
         { userName: user.userName, password: user.password }
@@ -31,6 +33,7 @@ export const createUserService = async (user: CreateUserDto): Promise<User> => {
   return resultadoTransaccion;
 };
 
+// Obtener todos los usuarios
 export const getAllUsersService = async (): Promise<User[]> => {
   const dataSource = await getDataSource();
   return await dataSource.getRepository(User).find({
@@ -38,6 +41,7 @@ export const getAllUsersService = async (): Promise<User[]> => {
   });
 };
 
+// Login
 export const loginService = async (credenciales: CredencialDto): Promise<any> => {
   const dataSource = await getDataSource();
   const validacion: Icredencial = await validateCredencials(credenciales);
@@ -50,6 +54,7 @@ export const loginService = async (credenciales: CredencialDto): Promise<any> =>
   return { login: true, user };
 };
 
+// Obtener usuario por ID
 export const getUserByIdService = async (id: number): Promise<User> => {
   const dataSource = await getDataSource();
   const user = await dataSource.getRepository(User).findOne({
