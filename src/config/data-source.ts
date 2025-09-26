@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm"
+import { DataSource } from "typeorm";
 import { User } from "../entities/User";
 import { userCredential } from "../entities/Credential";
 import { Appointment } from "../entities/Turn";
@@ -27,6 +27,10 @@ export const AppDataSource = new DataSource({
   subscribers: [],
   migrations: [],
   ssl: { rejectUnauthorized: false },
+  extra: {
+    ssl: { rejectUnauthorized: false },
+    keepAlive: true,
+  },
 });
 
 // 👉 Inicializador para Vercel
