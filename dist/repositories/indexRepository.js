@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CredentialRepository = exports.appointmentRepository = exports.userRepository = void 0;
+const data_source_1 = require("../config/data-source");
+const Turn_1 = require("../entities/Turn");
+const User_1 = require("../entities/User");
+const Credential_1 = require("../entities/Credential");
+exports.userRepository = data_source_1.AppDataSource.getRepository(User_1.User);
+exports.appointmentRepository = data_source_1.AppDataSource.getRepository(Turn_1.Appointment);
+exports.CredentialRepository = data_source_1.AppDataSource.getRepository(Credential_1.userCredential);
