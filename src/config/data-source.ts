@@ -18,7 +18,7 @@ export const AppDataSource = new DataSource({
   entities: [User, userCredential, Appointment],
   ssl: { rejectUnauthorized: false },
   extra: {
-    max: 5,                     // máximo 5 conexiones
+    max: 20,                     // máximo 5 conexiones
     idleTimeoutMillis: 30000,   // desconecta conexiones inactivas
     connectionTimeoutMillis: 10000, // aumenta el timeout a 10s
     keepAlive: true,            // reutiliza conexiones
