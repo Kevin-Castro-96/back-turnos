@@ -6,7 +6,7 @@ const preloadUsers: IUser[] = [
     id: 1,
     name: 'Juan Pérez',
     email: 'juan.perez@example.com',
-    birthdate: '1990-04-12',
+    birthdate: new Date("1996-05-10"),
     nDni: 12345678,
     credentialsId: 101
   },
@@ -14,7 +14,7 @@ const preloadUsers: IUser[] = [
     id: 2,
     name: 'María López',
     email: 'maria.lopez@example.com',
-    birthdate: '1985-09-23',
+    birthdate: new Date("1996-05-10"),
     nDni: 87654321,
     credentialsId: 102
   },
@@ -22,7 +22,7 @@ const preloadUsers: IUser[] = [
     id: 3,
     name: 'Carlos García',
     email: 'carlos.garcia@example.com',
-    birthdate: '1992-01-15',
+    birthdate: new Date("1996-05-10"),
     nDni: 23456789,
     credentialsId: 103
   },
@@ -30,7 +30,7 @@ const preloadUsers: IUser[] = [
     id: 4,
     name: 'Lucía Fernández',
     email: 'lucia.fernandez@example.com',
-    birthdate: '1995-06-08',
+    birthdate: new Date("1996-05-10"),
     nDni: 34567890,
     credentialsId: 104
   }
