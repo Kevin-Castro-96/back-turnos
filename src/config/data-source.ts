@@ -6,11 +6,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import { config } from "./envs";
 
-// Configuración segura para Vercel serverless + Supabase pooler
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: config.DB_HOST,       // pooler host de Supabase
-  port: config.DB_PORT,       // 6543 si usas pooler
+  host: config.DB_HOST,
+  port: Number(config.DB_PORT),
   username: config.DB_USERNAME,
   password: config.DB_PASSWORD,
   database: config.DB_NAME,
@@ -19,9 +18,9 @@ export const AppDataSource = new DataSource({
   entities: [User, userCredential, Appointment],
   ssl: { rejectUnauthorized: false },
   extra: {
-    max: 5,                     // máximo 5 conexiones por Lambda
-    idleTimeoutMillis: 30000,   // desconectar conexiones inactivas
-    connectionTimeoutMillis: 5000, // espera máxima por conexión
-    keepAlive: true,            // reutilizar conexiones
+    max: 5,                     // máximo 5 conexiones
+    idleTimeoutMillis: 30000,   // desconecta conexiones inactivas
+    connectionTimeoutMillis: 10000, // aumenta el timeout a 10s
+    keepAlive: true,            // reutiliza conexiones
   },
 });
